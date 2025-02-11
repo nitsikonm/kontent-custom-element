@@ -7,16 +7,17 @@ var CustomElement;
 
     CustomElement = {
         init: function() {
-            // เปลี่ยนจาก CustomElement.init เป็น window.CustomElement.init
             window.CustomElement.init((el) => {
                 element = el;
                 if (element.value) {
                     ingredients = JSON.parse(element.value);
-                    renderIngredients();
                 }
+                renderIngredients();
                 element.setHeight(400);
                 
-                document.getElementById('add-ingredient').addEventListener('click', addIngredient);
+                // เพิ่ม event listener ที่นี่
+                document.getElementById('add-ingredient')
+                    .addEventListener('click', () => CustomElement.addIngredient());
             });
         },
 
@@ -45,6 +46,8 @@ var CustomElement;
 
     function renderIngredients() {
         const container = document.getElementById('ingredients-list');
+        if (!container) return; // เพิ่มการตรวจสอบ
+        
         container.innerHTML = '';
         
         ingredients.forEach((ingredient, index) => {
@@ -62,12 +65,10 @@ var CustomElement;
     }
 
     function updateValue() {
-        // เปลี่ยนจาก CustomElement.setValue เป็น element.setValue
         element.setValue(JSON.stringify(ingredients));
     }
 })();
 
-// เรียก init เมื่อ document พร้อม
 document.addEventListener('DOMContentLoaded', function() {
     CustomElement.init();
 });

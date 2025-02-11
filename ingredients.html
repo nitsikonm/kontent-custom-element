@@ -1,18 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Ingredients Custom Element</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .ingredient-item {
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+
+        input {
+            margin: 0 5px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 8px 16px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0052a3;
+        }
+    </style>
 </head>
+
 <body>
     <div id="ingredients-container">
         <div id="ingredients-list"></div>
-        <button id="add-ingredient">Add Ingredient</button>
+        <button id="add-ingredient" type="button">Add Ingredient</button>
     </div>
-    
-    <!-- Custom Element SDK -->
+
+    <!-- Kontent.ai Custom Element API -->
     <script src="https://app.kontent.ai/js-api/custom-element/v1/custom-element.min.js"></script>
+    <!-- Our Custom Element implementation -->
     <script src="js/ingredients.js"></script>
 </body>
+
 </html>
