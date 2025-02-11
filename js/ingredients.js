@@ -1,34 +1,33 @@
-var CustomElement = (function () {
+var CustomElement = (function() {
     var element;
     var ingredients = [];
 
-    function init(element) {
-        // Initialize Custom Element
+    function init() {
         CustomElement.init((el) => {
             element = el;
-            // Load any value that is already saved
             if (element.value) {
                 ingredients = JSON.parse(element.value);
                 renderIngredients();
             }
-            // Initialize the UI
             element.setHeight(400);
+            
+            document.getElementById('add-ingredient').addEventListener('click', addIngredient);
         });
     }
 
     function renderIngredients() {
         const container = document.getElementById('ingredients-list');
         container.innerHTML = '';
-
+        
         ingredients.forEach((ingredient, index) => {
             const ingredientDiv = document.createElement('div');
             ingredientDiv.className = 'ingredient-item';
             ingredientDiv.innerHTML = `
-                <input type="text" value="${ingredient.item}" placeholder="Item" onchange="updateIngredient(${index}, 'item', this.value)">
-                <input type="number" value="${ingredient.amount}" placeholder="Amount" onchange="updateIngredient(${index}, 'amount', this.value)">
-                <input type="text" value="${ingredient.unit}" placeholder="Unit" onchange="updateIngredient(${index}, 'unit', this.value)">
-                <input type="text" value="${ingredient.note}" placeholder="Note" onchange="updateIngredient(${index}, 'note', this.value)">
-                <button onclick="removeIngredient(${index})">Remove</button>
+                <input type="text" value="${ingredient.item || ''}" placeholder="Item" onchange="CustomElement.updateIngredient(${index}, 'item', this.value)">
+                <input type="number" value="${ingredient.amount || 0}" placeholder="Amount" onchange="CustomElement.updateIngredient(${index}, 'amount', parseFloat(this.value))">
+                <input type="text" value="${ingredient.unit || ''}" placeholder="Unit" onchange="CustomElement.updateIngredient(${index}, 'unit', this.value)">
+                <input type="text" value="${ingredient.note || ''}" placeholder="Note" onchange="CustomElement.updateIngredient(${index}, 'note', this.value)">
+                <button onclick="CustomElement.removeIngredient(${index})">Remove</button>
             `;
             container.appendChild(ingredientDiv);
         });
@@ -68,5 +67,4 @@ var CustomElement = (function () {
     };
 })();
 
-// Initialize when the page loads
 CustomElement.init();
