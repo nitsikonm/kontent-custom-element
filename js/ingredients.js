@@ -1,19 +1,47 @@
-var CustomElement = (function() {
+// js/ingredients.js
+var CustomElement;
+
+(function() {
     var element;
     var ingredients = [];
 
-    function init() {
-        CustomElement.init((el) => {
-            element = el;
-            if (element.value) {
-                ingredients = JSON.parse(element.value);
-                renderIngredients();
-            }
-            element.setHeight(400);
-            
-            document.getElementById('add-ingredient').addEventListener('click', addIngredient);
-        });
-    }
+    CustomElement = {
+        init: function() {
+            // เปลี่ยนจาก CustomElement.init เป็น window.CustomElement.init
+            window.CustomElement.init((el) => {
+                element = el;
+                if (element.value) {
+                    ingredients = JSON.parse(element.value);
+                    renderIngredients();
+                }
+                element.setHeight(400);
+                
+                document.getElementById('add-ingredient').addEventListener('click', addIngredient);
+            });
+        },
+
+        addIngredient: function() {
+            ingredients.push({
+                item: '',
+                amount: 0,
+                unit: '',
+                note: ''
+            });
+            renderIngredients();
+            updateValue();
+        },
+
+        updateIngredient: function(index, field, value) {
+            ingredients[index][field] = value;
+            updateValue();
+        },
+
+        removeIngredient: function(index) {
+            ingredients.splice(index, 1);
+            renderIngredients();
+            updateValue();
+        }
+    };
 
     function renderIngredients() {
         const container = document.getElementById('ingredients-list');
@@ -33,38 +61,13 @@ var CustomElement = (function() {
         });
     }
 
-    function addIngredient() {
-        ingredients.push({
-            item: '',
-            amount: 0,
-            unit: '',
-            note: ''
-        });
-        renderIngredients();
-        updateValue();
-    }
-
-    function updateIngredient(index, field, value) {
-        ingredients[index][field] = value;
-        updateValue();
-    }
-
-    function removeIngredient(index) {
-        ingredients.splice(index, 1);
-        renderIngredients();
-        updateValue();
-    }
-
     function updateValue() {
-        CustomElement.setValue(JSON.stringify(ingredients));
+        // เปลี่ยนจาก CustomElement.setValue เป็น element.setValue
+        element.setValue(JSON.stringify(ingredients));
     }
-
-    return {
-        init: init,
-        addIngredient: addIngredient,
-        updateIngredient: updateIngredient,
-        removeIngredient: removeIngredient
-    };
 })();
 
-CustomElement.init();
+// เรียก init เมื่อ document พร้อม
+document.addEventListener('DOMContentLoaded', function() {
+    CustomElement.init();
+});
